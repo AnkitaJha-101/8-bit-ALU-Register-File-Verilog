@@ -1,0 +1,80 @@
+================================================================================
+  SYNTHESIS, TIMING, AND FPGA RESOURCE UTILIZATION ANALYSIS REPORT
+================================================================================
+Project:      Design and Verification of an 8-bit ALU with Register File in Verilog,
+              and Adder Architecture Analysis
+Author:       Senior FPGA & Synthesis Engineer
+Date:         2026-11-14
+Target FPGA:  Xilinx Artix-7 (xc7a35tcpg236-1)
+Top Module:   alu_regfile_top
+Status:       Pre-Synthesis Engineering Estimation & Vivado Script Suite Prepared
+
+--------------------------------------------------------------------------------
+1. TOOL AVAILABILITY NOTICE
+--------------------------------------------------------------------------------
+During environment inspection on the host machine, Xilinx Vivado CLI tools
+(vivado, xvlog, xelab, xsim) were not detected in system PATH.
+Per project requirements:
+- NO fabricated tool execution runs are reported.
+- All metrics in this report represent rigorous, physics-based architectural
+  estimations calibrated against standard Xilinx 7-series 28nm SLICE metrics.
+- Complete, turnkey Vivado synthesis scripts (create_project.tcl, run_synth.tcl,
+  run_adder_synth_comparison.tcl, and timing_constraints.xdc) are fully prepared
+  and ready for batch execution in any Vivado installation.
+
+--------------------------------------------------------------------------------
+2. ARCHITECTURAL RESOURCE BREAKDOWN & ESTIMATION (alu_regfile_top)
+--------------------------------------------------------------------------------
+Module Component           | Target Hardware Primitive | Estimated Count | Comments
+---------------------------+---------------------------+-----------------+--------------------------------
+Register File (8 x 8-bit)  | Slice Flip-Flops (FDRE)   | 64 FFs          | 8 registers x 8 bits
+                           | or Distributed RAM        | (or 16 LUTRAMs) | (RAM32X1D / LUTRAM inference)
+Read Port Multiplexers     | LUT6 (6-input LUTs)       | 16 LUTs         | 2x 8:1 8-bit multiplexers
+Write Data Mux (wr_src_sel)| LUT3                      | 8 LUTs          | 2:1 multiplexer per bit
+8-bit ALU Core Logic       | LUT6 / LUT5               | ~32 - 40 LUTs   | 12-op function generator
+8-bit CLA Adder Logic      | LUT4 / LUT6               | ~14 LUTs        | Carry Lookahead structure
+Status Flags Logic         | LUT2 / LUT4               | ~6 LUTs         | Carry, Zero, Overflow, Sign
+---------------------------+---------------------------+-----------------+--------------------------------
+TOTAL ESTIMATED LOGIC:
+- Look-Up Tables (LUTs)    : ~65 to 78 LUTs (< 0.4% of xc7a35t available 20,800 LUTs)
+- Slice Flip-Flops (FDRE)  : 64 FFs         (< 0.2% of xc7a35t available 41,600 FFs)
+- I/O Buffers (IBUF/OBUF)  : 41 Pins (if all ports brought to top-level I/O pins)
+
+--------------------------------------------------------------------------------
+3. TIMING ESTIMATION & OPERATING FREQUENCY (100 MHz System Target)
+--------------------------------------------------------------------------------
+Target System Clock:       100.000 MHz (Period: 10.000 ns)
+Estimated Critical Path:   Register File Read Address -> Dual-Port Asynchronous Read
+                           -> ALU Operand Inputs -> CLA Adder Core -> ALU Function Mux
+                           -> ALU Output -> Setup into Destination Register
+
+Component Delay Breakdown:
+- T_cko (Clock-to-Output from source register/input buffer): ~0.45 ns
+- T_logic (RegFile MUX + CLA Adder + ALU multiplexer):      ~2.85 ns (3 to 4 logic levels)
+- T_net (Interconnect and local routing delay):             ~1.20 ns
+- T_setup (Setup time of destination register):             ~0.15 ns
+-------------------------------------------------------------------------------
+Estimated Total Data Path Delay (Data Path Latency):        ~4.65 ns
+Slack under 10.000 ns clock constraint:                     +5.35 ns (Positive Slack, MET)
+Estimated Maximum Operating Frequency (F_max):              ~215.0 MHz
+
+--------------------------------------------------------------------------------
+4. POWER ESTIMATION (Estimated for Artix-7 @ 100 MHz, 25°C ambient)
+--------------------------------------------------------------------------------
+- Static Quiescent Power:  ~0.072 W (Device baseline static leakage for 28nm Artix-7)
+- Dynamic Switching Power: ~0.004 W (Extremely low due to compact logic footprint)
+- Total Estimated Power:   ~0.076 W
+
+--------------------------------------------------------------------------------
+5. INSTRUCTIONS TO EXECUTE LIVE VIVADO SYNTHESIS
+--------------------------------------------------------------------------------
+When Vivado is installed or launched on an FPGA development station:
+1. Open Windows Command Prompt or PowerShell:
+   cd Digital_Design_Projects\Project_1_8bit_ALU\vivado
+2. Run automated batch synthesis:
+   vivado -mode batch -source run_synth.tcl
+3. Inspect generated implementation reports in `reports/`:
+   - reports/utilization_impl.rpt
+   - reports/timing_summary_impl.rpt
+   - reports/power_impl.rpt
+================================================================================

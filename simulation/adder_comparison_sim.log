@@ -1,0 +1,14 @@
+==================================================================
+  STARTING ADDER ARCHITECTURE COMPARISON VERIFICATION (8-BIT)     
+  Architectures: Ripple Carry (RCA) vs CLA vs Carry Select (CSLA) 
+==================================================================
+[PHASE 1] Executed 15 Directed Edge Cases. Passes=15, Failures=0
+[PHASE 2] Executed 100 Randomized Test Vectors.
+==================================================================
+  ADDER ARCHITECTURE COMPARISON VERIFICATION SUMMARY              
+==================================================================
+  Total Tests Executed : 115
+  Passed Tests         : 115
+  Failed Tests         : 0
+  VERIFICATION RESULT  : >>> ALL ADDER TESTS PASSED <<<
+==================================================================

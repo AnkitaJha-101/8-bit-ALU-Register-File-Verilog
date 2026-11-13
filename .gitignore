@@ -1,0 +1,43 @@
+# ==============================================================================
+# Git Ignore: Vivado, EDA Simulators, and OS Artifacts
+# ==============================================================================
+
+# Xilinx Vivado Project & Temporary Artifacts
+.Xil/
+*.jou
+*.str
+*.dcp
+*.bit
+*.bin
+*.hw/
+*.ip_user_files/
+*.runs/
+*.cache/
+*.sim/
+*.gen/
+hd_visual/
+vivado*.log
+vivado*.jou
+
+# Compilation temporaries
+*.vvp
+*.o
+*.obj
+
+# Python Bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Windows / OS metadata
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+
+# Editor Settings
+.vscode/
+.idea/
+*.swp
+*~
