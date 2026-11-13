@@ -292,7 +292,5 @@ vivado -mode batch -source create_project.tcl
 ---
 
 ## 11. Author & Acknowledgments
-
-- **Author:** Senior RTL Design & Verification Engineer
 - **GitHub Profile:** [AnkitaJha-101](https://github.com/AnkitaJha-101)
 - **Target EDA Tools:** Xilinx Vivado Design Suite, Icarus Verilog, GTKWave
